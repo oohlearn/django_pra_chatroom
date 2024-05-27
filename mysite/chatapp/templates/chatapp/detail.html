@@ -1,11 +1,25 @@
-{{room.name}}
+{% extends "chatapp/base.html" %} {% block body %}
+<div class="m-10 font-bold">{{room.name}}</div>
+<div class="message-container m-10 overflow-auto h-[600px]" id="message-container">
+  <div id="chat-messages">
+    {% for message in chat_message %}
+    <div class="message shadow-lg p-3 rounded-lg w-1/2 bg-blue-300 m-3">
+      <div class="text-gray-500">{{ message.user.username }}</div>
+      <div>{{ message.message }}</div>
+      <div class="text-gray-500">{{ message.date }}</div>
+      <br />
+    </div>
+    {% endfor %}
+  </div>
+</div>
 
-<div id="chat-messages"></div>
-<form action="" method="post">
-  {% csrf_token %}
-  <input type="text" name="message" id="message-input" />
-  <button type="submit" id="send-button">Send</button>
-</form>
+<div class="form-container fixed inset-x-0 bottom-0 bg-blue-900 p-4">
+  <form action="" method="post">
+    {% csrf_token %}
+    <input type="text" name="message" id="message-input" class="rounded-md px-2" />
+    <button type="submit" id="send-button" class="text-white ml-5">Send</button>
+  </form>
+</div>
 
 {{ room.slug|json_script:"json-chatRoomName" }}
 <!-- 這是一個自定義過濾器，json_script 是過濾器的名稱，會將傳入的數據轉換為JSON格式並安全地嵌入到HTML中。 -->
@@ -19,8 +33,9 @@
     const data = JSON.parse(e.data);
     if (data.message) {
       console.log("New", data.message);
-      let html = data.username + " : " + data.message;
-      document.getElementById("chat-messages").innerHTML += html + "<br />";
+      let html = '<div class="message shadow-lg p-3 rounded-lg w-1/2 bg-blue-300 m-3"> <div class="text-gray-500">' + data.username + " </div> <div>" + data.message + '</div> <div class="text-gray-500"> Now </div>';
+      document.getElementById("chat-messages").innerHTML += html;
+      scroll();
     } else {
       alert("The message was empty");
     }
@@ -43,4 +58,15 @@
     );
     messageInput.value = "";
   };
+  function scroll() {
+    const mcontainer = document.getElementById("message-container");
+    mcontainer.scrollTop = mcontainer.scrollHeight;
+  }
+  window.addEventListener("beforeunload", async (event) => {
+    await new Promise((resolve) => {
+      chatSocket.onclose = resolve;
+      chatSocket.close();
+    });
+  });
 </script>
+{% endblock %}

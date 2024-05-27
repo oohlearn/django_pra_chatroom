@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <nav class="shadow-lg px-3 py-2.5">
+      <div class="container flex flex-wrap justify-between mx-auto">
+        <a href="" class="flex items-center">
+          <img class="h-16 mr-3" src="https://cdn0.iconfinder.com/data/icons/eon-social-media-contact-info-2/32/telegram_social_media_network_chat-1024.png" alt="" />
+          <span class="text-4xl font-semibold self-center">Chats App</span>
+        </a>
+        <div class="block w-auto">
+          <ul class="flex flex-row p-4 mt-4 border rounded-lg border-gray-100 bg-blue-50">
+            <li><a href="" class="block py-2 pl-3 pr-4 rounded bg-blue-700 text-white">Rooms</a></li>
+            <li><a href="{% url 'login' %}" class="block py-2 pl-3 pr-4 rounded">Login</a></li>
+            <li><a href="{% url 'logout' %}" class="block py-2 pl-3 pr-4 rounded">Logout</a></li>
+
+            <li><a href="" class="block py-2 pl-3 pr-4 rounded">About</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    {% block body %} {% endblock %}
+  </body>
+</html>

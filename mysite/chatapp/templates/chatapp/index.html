@@ -1,0 +1,7 @@
+List of rooms
+
+<div>
+  {% for room in rooms %}
+  <a href="{% url 'detail' room.slug %}">{{room.name}}</a><br />
+  {% endfor %}
+</div>
